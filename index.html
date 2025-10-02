@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <title>My Pet Store</title>
+  </head>
+  <body>
+    <div id="webstore">
+      <header>
+        <h1>{{message}}</h1>
+        <button @click="showProduct = false">
+          {{ItemInCart}}
+          <span class="fa-solid fa-cart-shopping"></span>
+          CheckOut
+        </button>
+        <button @click="showProduct = true">
+          Product
+        </button>
+      </header>
+       <main>
+        
+        <figure v-if="showProduct">
+          <img v-bind:src="product.image" alt="Cat Image" />
+          <h2 v-text="product.title"></h2>
+          <p v-text="product.id"></p>
+          <p v-text="product.description"></p>
+          <p>Price: {{product.price}}</p>
+          <button v-on:click="addItemtoCart" :disabled="!canAddToCart">
+            Add To Cart
+          </button>
+        </figure>
+        <section v-else>
+          <h2>CheckOut</h2>
+          <p v-if="ItemInCart">You have {{ItemInCart}} items in your cart.</p>
+          <p v-else>Your cart is empty.</p>
+      </main>
+      
+  
+      </div>
+
+      
+    </div>
+
+    <script>
+      let webstore = new Vue({
+        el: "#webstore",
+        data: {
+          message: "Welcome to my Pet Store!!!",
+          showProduct: true,
+          product: {
+            id: 1001,
+            title: "Cat Food 25 lb bag",
+            description: "Irresistible cat food for your cat",
+            price: 2000,
+            image: "images/cat.jpg",
+            availableInventory: 5,
+          },
+          cart: [],
+        },
+        methods: {
+          addItemtoCart: function () {
+            this.cart.push(this.product.id);
+          },
+          showProduct:function(){
+            if(this.showProduct){
+              this.showProduct=false;
+            }else{
+              this.showProduct=true;
+            }
+            //this.showProduct = this.showProduct ? false : true;
+          }
+        },
+        computed: {
+          ItemInCart() {
+            return this.cart.length || "";
+          },
+          canAddToCart() {
+            return this.product.availableInventory > this.ItemInCart;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
